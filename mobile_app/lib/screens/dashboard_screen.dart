@@ -147,7 +147,7 @@ class DashboardScreen extends StatelessWidget {
             _SettingsTile(
               icon: Icons.info_outline_rounded,
               title: 'Ilova haqida',
-              subtitle: 'AI English Tutor v1.0',
+              subtitle: 'LingoFy v1.0',
               onTap: () {},
             ),
             const SizedBox(height: 16),

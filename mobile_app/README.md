@@ -1,7 +1,7 @@
 
-# AI English Tutor - Mobile App
+# LingoFy - Mobile App
 
-This is a Flutter mobile application port of the AI English Tutor web app.
+This is a Flutter mobile application port of the LingoFy web app.
 
 ## Setup
 

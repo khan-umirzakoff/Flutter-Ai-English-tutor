@@ -35,7 +35,7 @@ class LanguageSelectionScreen extends StatelessWidget {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('AI English Tutor', style: theme.textTheme.labelLarge),
+                        Text('LingoFy', style: theme.textTheme.labelLarge),
                         Text('Boshlash uchun tilni tanlang', style: theme.textTheme.bodyMedium),
                       ],
                     )

@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => AppProvider()),
       ],
       child: MaterialApp(
-        title: 'AI English Tutor',
+        title: 'LingoFy',
         theme: AppTheme.lightTheme,
         home: const AppNavigator(),
         debugShowCheckedModeBanner: false,
