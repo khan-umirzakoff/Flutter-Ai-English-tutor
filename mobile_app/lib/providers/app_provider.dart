@@ -19,6 +19,8 @@ class AppProvider with ChangeNotifier {
   
   LanguagePair? _languages;
   String? _learningPath;
+  String? _proficiencyLevel;
+  String? _dailyTimeCommitment;
   List<Lesson> _lessonPlan = [];
   LearningHistory _history = LearningHistory(scores: [], conversations: {}, onboardingConversation: []);
   
@@ -31,6 +33,8 @@ class AppProvider with ChangeNotifier {
   // Getters
   LanguagePair? get languages => _languages;
   String? get learningPath => _learningPath;
+  String? get proficiencyLevel => _proficiencyLevel;
+  String? get dailyTimeCommitment => _dailyTimeCommitment;
   List<Lesson> get lessonPlan => _lessonPlan;
   LearningHistory get history => _history;
   Lesson? get currentLesson => _currentLesson;
@@ -51,6 +55,8 @@ class AppProvider with ChangeNotifier {
     }
 
     _learningPath = prefs.getString('learningPath');
+    _proficiencyLevel = prefs.getString('proficiencyLevel');
+    _dailyTimeCommitment = prefs.getString('dailyTimeCommitment');
     
     final planJson = prefs.getString('lessonPlan');
     if (planJson != null) {
@@ -88,18 +94,18 @@ class AppProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> completeOnboarding(String path) async {
-    _learningPath = path;
+  Future<void> completeOnboardingSetup(String goal, String level, String time) async {
+    _learningPath = goal;
+    _proficiencyLevel = level;
+    _dailyTimeCommitment = time;
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('learningPath', path);
+    await prefs.setString('learningPath', goal);
+    await prefs.setString('proficiencyLevel', level);
+    await prefs.setString('dailyTimeCommitment', time);
     
     // Clear old plan
     _lessonPlan = [];
     await prefs.remove('lessonPlan');
-    
-    // Clear onboarding history from main history if desired, or keep it
-    // _history = _history.copyWith(onboardingConversation: []); 
-    // await _saveHistory();
 
     _status = AppStateStatus.generatingPlan;
     notifyListeners();
@@ -113,7 +119,13 @@ class AppProvider with ChangeNotifier {
     notifyListeners();
 
     try {
-      final newPlan = await _geminiService.generateLessonPlan(_learningPath!, _history, _languages!);
+      final newPlan = await _geminiService.generateLessonPlan(
+        _learningPath!, 
+        _proficiencyLevel ?? 'Not specified',
+        _dailyTimeCommitment ?? 'Not specified',
+        _history, 
+        _languages!
+      );
       _lessonPlan = newPlan;
       
       final prefs = await SharedPreferences.getInstance();
@@ -188,6 +200,8 @@ class AppProvider with ChangeNotifier {
     
     _languages = null;
     _learningPath = null;
+    _proficiencyLevel = null;
+    _dailyTimeCommitment = null;
     _lessonPlan = [];
     _history = LearningHistory(scores: [], conversations: {}, onboardingConversation: []);
     _currentLesson = null;
